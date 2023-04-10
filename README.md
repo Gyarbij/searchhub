@@ -7,21 +7,28 @@
 [![codebeat badge](https://codebeat.co/badges/e96cada2-fb6f-4528-8285-7d72abd74e8d)](https://codebeat.co/projects/github-com-benbusby-shoogle-master)
 [![Docker Pulls](https://img.shields.io/docker/pulls/benbusby/whoogle-search)](https://hub.docker.com/r/benbusby/whoogle-search)
 
+<table>
+  <tr>
+    <td><a href="https://sr.ht/~benbusby/whoogle-search">SourceHut</a></td>
+    <td><a href="https://github.com/benbusby/whoogle-search">GitHub</a></td>
+  </tr>
+</table>
+
 Get Google search results, but without any ads, javascript, AMP links, cookies, or IP address tracking. Easily deployable in one click as a Docker app, and customizable with a single config file. Quick and simple to implement as a primary search engine replacement on both desktop and mobile.
 
 Contents
 1. [Features](#features)
-2. [Dependencies](#dependencies)
-3. [Install/Deploy](#install)
-    1. [Heroku Quick Deploy](#a-heroku-quick-deploy)
-    2. [Repl.it](#b-replit)
-    3. [Fly.io](#c-flyio)
-    4. [pipx](#d-pipx)
-    5. [pip](#e-pip)
-    6. [Manual](#f-manual)
-    7. [Docker](#g-manual-docker)
-    8. [Arch/AUR](#arch-linux--arch-based-distributions)
-    9. [Helm/Kubernetes](#helm-chart-for-kubernetes)
+3. [Install/Deploy Options](#install)
+    1. [Heroku Quick Deploy](#heroku-quick-deploy)
+    1. [Repl.it](#replit)
+    1. [Fly.io](#flyio)
+    1. [Koyeb](#koyeb)
+    1. [pipx](#pipx)
+    1. [pip](#pip)
+    1. [Manual](#manual)
+    1. [Docker](#manual-docker)
+    1. [Arch/AUR](#arch-linux--arch-based-distributions)
+    1. [Helm/Kubernetes](#helm-chart-for-kubernetes)
 4. [Environment Variables and Configuration](#environment-variables)
 5. [Usage](#usage)
 6. [Extra Steps](#extra-steps)
@@ -35,9 +42,6 @@ Contents
 8. [FAQ](#faq)
 9. [Public Instances](#public-instances)
 10. [Screenshots](#screenshots)
-11. Mirrors (read-only)
-    1. [GitLab](https://gitlab.com/benbusby/whoogle-search)
-    2. [Gogs](https://gogs.benbusby.com/benbusby/whoogle-search)
 
 ## Features
 - No ads or sponsored content
@@ -64,33 +68,25 @@ Contents
 
 <sup>***If deployed to a remote server, or configured to send requests through a VPN, Tor, proxy, etc.</sup>
 
-## Dependencies
-If using Heroku Quick Deploy, **you can skip this section**.
-
-- Docker ([Windows](https://docs.docker.com/docker-for-windows/install/), [macOS](https://docs.docker.com/docker-for-mac/install/), [Ubuntu](https://docs.docker.com/engine/install/ubuntu/), [other Linux distros](https://docs.docker.com/engine/install/binaries/))
-  - Only needed if you intend on deploying the app as a Docker image
-- [Python3](https://www.python.org/downloads/)
-- `libcurl4-openssl-dev` and `libssl-dev`
-  - macOS: `brew install openssl curl-openssl`
-  - Ubuntu: `sudo apt-get install -y libcurl4-openssl-dev libssl-dev`
-  - Arch: `pacman -S curl openssl`
-
 ## Install
 There are a few different ways to begin using the app, depending on your preferences:
 
-### A) [Heroku Quick Deploy](https://heroku.com/about)
+___
+
+### [Heroku Quick Deploy](https://heroku.com/about)
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/benbusby/whoogle-search/tree/main)
 
 Provides:
-- Free deployment of app
-- Free HTTPS url (https://\<your app name\>.herokuapp.com)
-- Downtime after periods of inactivity \([solution](https://github.com/benbusby/whoogle-search#prevent-downtime-heroku-only)\)
+- Easy Deployment of App
+- A HTTPS url (https://\<your app name\>.herokuapp.com)
 
 Notes:
-- Requires a (free) Heroku account
+- Requires a **PAID** Heroku Account.
 - Sometimes has issues with auto-redirecting to `https`. Make sure to navigate to the `https` version of your app before adding as a default search engine.
 
-### B) [Repl.it](https://repl.it)
+___
+
+### [Repl.it](https://repl.it)
 [![Run on Repl.it](https://repl.it/badge/github/benbusby/whoogle-search)](https://repl.it/github/benbusby/whoogle-search)
 
 *Note: Requires a (free) Replit account*
@@ -101,7 +97,9 @@ Provides:
     - Supports custom domains
 - Downtime after periods of inactivity \([solution 1](https://repl.it/talk/ask/use-this-pingmat1replco-just-enter/28821/101298), [solution 2](https://repl.it/talk/learn/How-to-use-and-setup-UptimeRobot/9003)\)
 
-### C) [Fly.io](https://fly.io)
+___
+
+### [Fly.io](https://fly.io)
 
 You will need a **PAID** [Fly.io](https://fly.io) account to deploy Whoogle.
 
@@ -114,9 +112,23 @@ flyctl auth login
 flyctl launch --image benbusby/whoogle-search:latest
 ```
 
+The first deploy won't succeed because the default `internal_port` is wrong.
+To fix this, open the generated `fly.toml` file, set `services.internal_port` to `5000` and run `flyctl launch` again.
+
 Your app is now available at `https://<app-name>.fly.dev`.
 
-### D) [pipx](https://github.com/pipxproject/pipx#install-pipx)
+___
+
+### [Koyeb](https://www.koyeb.com)
+
+Use one of the following guides to install Whoogle on Koyeb:
+
+1. Using GitHub: https://www.koyeb.com/docs/quickstart/deploy-with-git
+2. Using Docker: https://www.koyeb.com/docs/quickstart/deploy-a-docker-application
+
+___
+
+### [pipx](https://github.com/pipxproject/pipx#install-pipx)
 Persistent install:
 
 `pipx install git+https://github.com/benbusby/whoogle-search.git`
@@ -125,7 +137,9 @@ Sandboxed temporary instance:
 
 `pipx run --spec git+https://github.com/benbusby/whoogle-search.git whoogle-search`
 
-### E) pip
+___
+
+### pip
 `pip install whoogle-search`
 
 ```bash
@@ -152,9 +166,20 @@ optional arguments:
 ```
 See the [available environment variables](#environment-variables) for additional configuration.
 
-### F) Manual
+___
+
+### Manual
 
 *Note: `Content-Security-Policy` headers can be sent by Whoogle if you set `WHOOGLE_CSP`.*
+
+#### Dependencies
+- [Python3](https://www.python.org/downloads/)
+- `libcurl4-openssl-dev` and `libssl-dev`
+  - macOS: `brew install openssl curl-openssl`
+  - Ubuntu: `sudo apt-get install -y libcurl4-openssl-dev libssl-dev`
+  - Arch: `pacman -S curl openssl`
+
+#### Install
 
 Clone the repo and run the following commands to start the app in a local-only environment:
 
@@ -189,7 +214,6 @@ Description=Whoogle
 # with default values.
 #Environment=WHOOGLE_ALT_TW=farside.link/nitter
 #Environment=WHOOGLE_ALT_YT=farside.link/invidious
-#Environment=WHOOGLE_ALT_IG=farside.link/bibliogram/u
 #Environment=WHOOGLE_ALT_RD=farside.link/libreddit
 #Environment=WHOOGLE_ALT_MD=farside.link/scribe
 #Environment=WHOOGLE_ALT_TL=farside.link/lingva
@@ -269,7 +293,9 @@ There are two authentication methods, password and cookie. You will need to make
           - `WHOOGLE_CONFIG_TOR=1`
           - `WHOOGLE_TOR_USE_PASS=1`
 
-### G) Manual (Docker)
+___
+
+### Manual (Docker)
 1. Ensure the Docker daemon is running, and is accessible by your user account
   - To add user permissions, you can execute `sudo usermod -aG docker yourusername`
   - Running `docker ps` should return something besides an error. If you encounter an error saying the daemon isn't running, try `sudo systemctl start docker` (Linux) or ensure the docker tool is running (Windows/macOS).
@@ -330,15 +356,21 @@ heroku open
 This series of commands can take a while, but once you run it once, you shouldn't have to run it again. The final command, `heroku open` will launch a tab in your web browser, where you can test out Whoogle and even [set it as your primary search engine](https://github.com/benbusby/whoogle#set-whoogle-as-your-primary-search-engine).
 You may also edit environment variables from your app’s Settings tab in the Heroku Dashboard.
 
-#### Arch Linux & Arch-based Distributions
+___
+
+### Arch Linux & Arch-based Distributions
 There is an [AUR package available](https://aur.archlinux.org/packages/whoogle-git/), as well as a pre-built and daily updated package available at [Chaotic-AUR](https://chaotic.cx).
 
-#### Helm chart for Kubernetes
+___
+
+### Helm chart for Kubernetes
 To use the Kubernetes Helm Chart:
 1. Ensure you have [Helm](https://helm.sh/docs/intro/install/) `>=3.0.0` installed
 2. Clone this repository
 3. Update [charts/whoogle/values.yaml](./charts/whoogle/values.yaml) as desired
 4. Run `helm install whoogle ./charts/whoogle`
+
+___
 
 #### Using your own server, or alternative container deployment
 There are other methods for deploying docker containers that are well outlined in [this article](https://rollout.io/blog/the-shortlist-of-docker-hosting/), but there are too many to describe set up for each here. Generally it should be about the same amount of effort as the Heroku deployment.
@@ -370,7 +402,6 @@ There are a few optional environment variables available for customizing a Whoog
 | HTTPS_ONLY           | Enforce HTTPS. (See [here](https://github.com/benbusby/whoogle-search#https-enforcement)) |
 | WHOOGLE_ALT_TW       | The twitter.com alternative to use when site alternatives are enabled in the config. Set to "" to disable. |
 | WHOOGLE_ALT_YT       | The youtube.com alternative to use when site alternatives are enabled in the config. Set to "" to disable. |
-| WHOOGLE_ALT_IG       | The instagram.com alternative to use when site alternatives are enabled in the config. Set to "" to disable. |
 | WHOOGLE_ALT_RD       | The reddit.com alternative to use when site alternatives are enabled in the config. Set to "" to disable. |
 | WHOOGLE_ALT_TL       | The Google Translate alternative to use. This is used for all "translate ____" searches.  Set to "" to disable. |
 | WHOOGLE_ALT_MD       | The medium.com alternative to use when site alternatives are enabled in the config. Set to "" to disable. |
@@ -396,6 +427,8 @@ These environment variables allow setting default config values, but can be over
 | WHOOGLE_CONFIG_LANGUAGE              | Set interface language                                          |
 | WHOOGLE_CONFIG_SEARCH_LANGUAGE       | Set search result language                                      |
 | WHOOGLE_CONFIG_BLOCK                 | Block websites from search results (use comma-separated list)   |
+| WHOOGLE_CONFIG_BLOCK_TITLE           | Block search result with a REGEX filter on title                |
+| WHOOGLE_CONFIG_BLOCK_URL             | Block search result with a REGEX filter on URL                  |
 | WHOOGLE_CONFIG_THEME                 | Set theme mode (light, dark, or system)                         |
 | WHOOGLE_CONFIG_SAFE                  | Enable safe searches                                            |
 | WHOOGLE_CONFIG_ALTS                  | Use social media site alternatives (nitter, invidious, etc)     |
@@ -586,16 +619,16 @@ A lot of the app currently piggybacks on Google's existing support for fetching 
 | [https://search.garudalinux.org](https://search.garudalinux.org) | 🇫🇮 FI | Multi-choice | ✅ |
 | [https://search.dr460nf1r3.org](https://search.dr460nf1r3.org) | 🇩🇪 DE | Multi-choice | ✅ |
 | [https://s.tokhmi.xyz](https://s.tokhmi.xyz) | 🇺🇸 US | Multi-choice | ✅ |
-| [https://www.whooglesearch.ml](https://www.whooglesearch.ml) | 🇺🇸 US | English | |
 | [https://search.sethforprivacy.com](https://search.sethforprivacy.com) | 🇩🇪 DE | English | |
 | [https://whoogle.dcs0.hu](https://whoogle.dcs0.hu) | 🇭🇺 HU | Multi-choice | |
 | [https://whoogle.esmailelbob.xyz](https://whoogle.esmailelbob.xyz) | 🇨🇦 CA | Multi-choice | |
 | [https://gowogle.voring.me](https://gowogle.voring.me) | 🇺🇸 US | Multi-choice | |
+| [https://whoogle.privacydev.net](https://whoogle.privacydev.net) | 🇳🇱 NL | English | |
+| [https://wg.vern.cc](https://wg.vern.cc) | 🇺🇸 US | English |  |
+| [https://whoogle.hxvy0.gq](https://whoogle.hxvy0.gq) | 🇨🇦 CA | Turkish Only | ✅ |
+| [https://whoogle.hostux.net](https://whoogle.hostux.net) | 🇫🇷 FR | Multi-choice | |
 | [https://whoogle.lunar.icu](https://whoogle.lunar.icu) | 🇩🇪 DE | Multi-choice | ✅ |
-| [https://whoogle.privacydev.net](https://whoogle.privacydev.net) | 🇺🇸 US | Multi-choice | |
-| [https://search.wef.lol](https://search.wef.lol) | 🇮🇸 IC | Multi-choice | |
-
-
+| [https://wgl.frail.duckdns.org](https://wgl.frail.duckdns.org) | 🇧🇷 BR | Multi-choice | |
 
 * A checkmark in the "Cloudflare" category here refers to the use of the reverse proxy, [Cloudflare](https://cloudflare.com). The checkmark will not be listed for a site which uses Cloudflare DNS but rather the proxying service which grants Cloudflare the ability to monitor traffic to the website.
 
@@ -605,6 +638,14 @@ A lot of the app currently piggybacks on Google's existing support for fetching 
 |-|-|-|
 | [http://whoglqjdkgt2an4tdepberwqz3hk7tjo4kqgdnuj77rt7nshw2xqhqad.onion](http://whoglqjdkgt2an4tdepberwqz3hk7tjo4kqgdnuj77rt7nshw2xqhqad.onion) | 🇺🇸 US |  Multi-choice
 | [http://nuifgsnbb2mcyza74o7illtqmuaqbwu4flam3cdmsrnudwcmkqur37qd.onion](http://nuifgsnbb2mcyza74o7illtqmuaqbwu4flam3cdmsrnudwcmkqur37qd.onion) | 🇩🇪 DE |  English
+| [http://whoogle.vernccvbvyi5qhfzyqengccj7lkove6bjot2xhh5kajhwvidqafczrad.onion](http://whoogle.vernccvbvyi5qhfzyqengccj7lkove6bjot2xhh5kajhwvidqafczrad.onion/) | 🇺🇸 US | English |
+| [http://whoogle.g4c3eya4clenolymqbpgwz3q3tawoxw56yhzk4vugqrl6dtu3ejvhjid.onion](http://whoogle.g4c3eya4clenolymqbpgwz3q3tawoxw56yhzk4vugqrl6dtu3ejvhjid.onion/) | 🇳🇱 NL | English |
+
+#### I2P Instances
+
+| Website | Country | Language |
+|-|-|-|
+| [http://verneks7rfjptpz5fpii7n7nrxilsidi2qxepeuuf66c3tsf4nhq.b32.i2p](http://verneks7rfjptpz5fpii7n7nrxilsidi2qxepeuuf66c3tsf4nhq.b32.i2p) | 🇺🇸 US | English |
 
 ## Screenshots
 #### Desktop
