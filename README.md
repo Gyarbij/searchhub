@@ -447,6 +447,7 @@ These environment variables allow setting default config values, but can be over
 | WHOOGLE_CONFIG_STYLE                 | The custom CSS to use for styling (should be single line)       |
 | WHOOGLE_CONFIG_PREFERENCES_ENCRYPTED | Encrypt preferences token, requires preferences key             |
 | WHOOGLE_CONFIG_PREFERENCES_KEY       | Key to encrypt preferences in URL (REQUIRED to show url)        |
+| WHOOGLE_CONFIG_ANON_VIEW             | Include the "anonymous view" option for each search result      |
 
 ## Usage
 Same as most search engines, with the exception of filtering by time range.
@@ -648,7 +649,6 @@ A lot of the app currently piggybacks on Google's existing support for fetching 
 
 | Website | Country | Language | Cloudflare |
 |-|-|-|-|
-| [https://search.neadond.space](https://search.neadond.space/) | 🇷🇺 RU | Multi-choice | ✅ |
 | [https://search.albony.xyz](https://search.albony.xyz/) | 🇮🇳 IN | Multi-choice |  |
 | [https://search.garudalinux.org](https://search.garudalinux.org) | 🇫🇮 FI | Multi-choice | ✅ |
 | [https://search.dr460nf1r3.org](https://search.dr460nf1r3.org) | 🇩🇪 DE | Multi-choice | ✅ |
