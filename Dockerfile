@@ -1,38 +1,38 @@
-FROM python:3.13-rc-alpine3.20 as builder
+FROM python:3.11-slim AS builder
 
-RUN apk --update add \
-    build-base \
+# Install dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    libffi-dev \
     libxml2-dev \
     libxslt-dev \
-    openssl-dev \
-    libffi-dev
+    openssl
 
-COPY requirements.txt .
-
+# Upgrade pip
 RUN pip install --upgrade pip
+
+# Install python packages from requirements.txt
+COPY requirements.txt .
 RUN pip install --prefix /install --no-warn-script-location --no-cache-dir -r requirements.txt
 
-FROM python:3.13-rc-alpine3.20
+FROM python:3.11-slim
 
-RUN apk add --update --no-cache tor curl openrc libstdc++
-# git go //for obfs4proxy
-# libcurl4-openssl-dev
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tor \
+    curl \
+    libstdc++ \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apk -U upgrade
-
-# uncomment to build obfs4proxy
-# RUN git clone https://gitlab.com/yawning/obfs4.git
-# WORKDIR /obfs4
-# RUN go build -o obfs4proxy/obfs4proxy ./obfs4proxy
-# RUN cp ./obfs4proxy/obfs4proxy /usr/bin/obfs4proxy
-
+# Add user and config directory
 ARG DOCKER_USER=whoogle
 ARG DOCKER_USERID=927
 ARG config_dir=/config
-RUN mkdir -p $config_dir
-RUN chmod a+w $config_dir
+RUN mkdir -p $config_dir && chmod a+w $config_dir
 VOLUME $config_dir
 
+# Environment variables
 ARG url_prefix=''
 ARG username=''
 ARG password=''
@@ -76,6 +76,7 @@ ENV CONFIG_VOLUME=$config_dir \
 
 WORKDIR /whoogle
 
+# Copy built packages
 COPY --from=builder /install /usr/local
 COPY misc/tor/torrc /etc/tor/torrc
 COPY misc/tor/start-tor.sh misc/tor/start-tor.sh
@@ -83,7 +84,7 @@ COPY app/ app/
 COPY run whoogle.env* ./
 
 # Create user/group to run as
-RUN adduser -D -g $DOCKER_USERID -u $DOCKER_USERID $DOCKER_USER
+RUN adduser --disabled-password --gecos "" $DOCKER_USER
 
 # Fix ownership / permissions
 RUN chown -R ${DOCKER_USER}:${DOCKER_USER} /whoogle /var/lib/tor
